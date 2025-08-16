@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Bem-vindo, @User.Identity.Name!</h2>
+
+<p><strong>Função:</strong> Admin</p>
+<p><strong>Perfil:</strong> @ViewBag.Profile</p>
+
+<p>Você está autenticado com sucesso e tem acesso ao painel administrativo.</p>
+
+<hr />
+
+<p><em>Token emitido por:</em> AuthApp</p>
+<p><em>Expira em:</em> @DateTimeOffset.FromUnixTimeSeconds(1755354675).ToLocalTime()</p>
+
