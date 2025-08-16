@@ -1,3 +1,13 @@
+:root {
+    --primary-color: #FAAC03;
+    --primary-light: #E8E8E8;
+    --secondary-color: #f8f9fc;
+    --accent-color: #2e59d9;
+    --text-color: #5a5c69;
+    --error-color: #e74a3b;
+    --success-color: #1cc88a;
+}
+
 html {
   font-size: 14px;
 }

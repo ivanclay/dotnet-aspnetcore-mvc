@@ -1,6 +1,60 @@
 ﻿@model LoginViewModel
 
 @{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    ViewBag.Title = "Login";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+<div class="login-container">
+    <div class="login-card">
+        <div class="login-header">
+            <div class="logo-container">
+                <img src="~/images/logo.png" alt="Logo da Empresa" class="brand-logo" />
+            </div>
+            <div class="title-container">
+                <h1 class="login-title">Envio de Comandos</h1>
+            </div>
+        </div>
+
+        <div class="login-body">
+            <form asp-action="Login" method="post">
+                <div class="mb-3">
+                    <input asp-for="UserName" class="form-control" placeholder="Usuário" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="Senha" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100">
+                    <span>Entrar</span>
+                </button>
+            </form>
+
+            @if (ViewBag.Error != null)
+            {
+                <div class="alert alert-danger mt-3">
+                    @ViewBag.Error
+                </div>
+            }
+        </div>
+
+        <div class="login-footer text-center mt-4">
+            © @DateTime.Now.Year - Sistema de Envio de Comandos
+        </div>
+    </div>
+</div>
+
+
+@* @model LoginViewModel
+
+@{
     ViewBag.Title = "Login";
 }
 
@@ -21,9 +75,5 @@
     </div>
 
     <button type="submit">Entrar</button>
-
-   @*  @if (!string.IsNullOrEmpty(Model.Erro))
-    {
-        <p style="color:red">@Model.Erro</p>
-    } *@
 }
+ *@
