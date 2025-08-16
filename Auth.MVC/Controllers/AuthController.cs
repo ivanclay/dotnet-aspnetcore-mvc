@@ -7,7 +7,6 @@ public class AuthController : Controller
     private readonly HttpClient _httpClient;
 
     public AuthController()
-    
     {
         _httpClient = new HttpClient();
         _httpClient.BaseAddress = new Uri("https://suaapi.com.br/");
@@ -51,6 +50,7 @@ public class AuthController : Controller
         }
 
         //model.Erro = "Credenciais inválidas";
-        return View(model);
+        return RedirectToAction("HandleErrorCode", "Error", new { statusCode = ((int)response.StatusCode) });
+
     }
 }

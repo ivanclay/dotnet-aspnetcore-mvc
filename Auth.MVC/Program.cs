@@ -32,8 +32,12 @@ builder.Services.AddAuthentication(options =>
 var app = builder.Build();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
 app.UseMiddleware<JwtMiddleware>(); // injeta o token no header
 app.UseAuthentication();            // valida o token
 app.UseAuthorization();             // aplica políticas
 app.MapDefaultControllerRoute();
+
+
+
 app.Run();
