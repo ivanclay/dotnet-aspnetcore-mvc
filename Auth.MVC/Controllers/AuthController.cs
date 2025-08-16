@@ -1,16 +1,14 @@
-﻿using Auth.MVC.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Auth.MVC.Services.Auth;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.MVC.Controllers;
 public class AuthController : Controller
 {
-    private readonly HttpClient _httpClient;
+    private readonly IAuthService _authService;
 
-    public AuthController()
+    public AuthController(IAuthService authService)
     {
-        _httpClient = new HttpClient();
-        _httpClient.BaseAddress = new Uri("https://suaapi.com.br/");
+        _authService = authService;
     }
 
     [HttpGet]
@@ -31,41 +29,30 @@ public class AuthController : Controller
             password = model.Password
         };
 
-        var response = await _httpClient.PostAsJsonAsync("https://localhost:7138/api/Auth/login", payload);
+        var response = await _authService.LoginAsync(model);
 
-        if (response.IsSuccessStatusCode)
+        if (response == null)
         {
-            var result = await response.Content.ReadFromJsonAsync<TokenResponse>();
-
-            // Armazenar token em cookie
-            Response.Cookies.Append("access_token", result.Token, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure = true,
-                Expires = DateTimeOffset.UtcNow.AddHours(1),
-                SameSite = SameSiteMode.Strict
-            });
-
-
-            return RedirectToAction("Index", "Dashboard");
+            return RedirectToAction("HandleErrorCode", "Error", new { statusCode = 500 });
         }
 
-        //model.Erro = "Credenciais inválidas";
-        return RedirectToAction("HandleErrorCode", "Error", new { statusCode = ((int)response.StatusCode) });
+        Response.Cookies.Append("access_token", response.Token, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Expires = DateTimeOffset.UtcNow.AddHours(1),
+            SameSite = SameSiteMode.Strict
+        });
 
+        return RedirectToAction("Index", "Dashboard");
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Logout()
     {
-        // Remove o cookie de autenticação
         Response.Cookies.Delete("access_token");
-
-        // Redireciona para a tela inicial pública
         return RedirectToAction("Index", "Home");
     }
-
-
 
 }
