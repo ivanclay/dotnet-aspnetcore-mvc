@@ -8,12 +8,26 @@
         403 => "Acesso proibido. Você não tem permissão para visualizar este conteúdo.",
         404 => "Página não encontrada. Verifique o endereço e tente novamente.",
         >= 500 => "Ocorreu um erro interno no servidor. Tente novamente mais tarde.",
-        _ => "Ocorreu um erro inesperado."
+        _ => "Algo deu errado, mas você pode voltar e tentar novamente."
     };
 }
 
 <h2>Erro @Model</h2>
 <p>@mensagem</p>
+
+@{
+    var previousUrl = Context.Request.Headers["Referer"].ToString();
+}
+
+@if (!string.IsNullOrEmpty(previousUrl))
+{
+    <a href="@previousUrl" class="btn btn-secondary">← Voltar</a>
+}
+else
+{
+    <a href="/" class="btn btn-secondary">← Ir para a Home</a>
+}
+
 
 
 @* @model ErrorViewModel
