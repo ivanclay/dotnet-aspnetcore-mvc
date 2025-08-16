@@ -1,4 +1,5 @@
 ﻿using Auth.MVC.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Auth.MVC.Controllers;
@@ -53,4 +54,18 @@ public class AuthController : Controller
         return RedirectToAction("HandleErrorCode", "Error", new { statusCode = ((int)response.StatusCode) });
 
     }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Logout()
+    {
+        // Remove o cookie de autenticação
+        Response.Cookies.Delete("access_token");
+
+        // Redireciona para a tela inicial pública
+        return RedirectToAction("Index", "Home");
+    }
+
+
+
 }
